@@ -24,6 +24,7 @@ from ._parts import (
     OperandValueError,
     Term,
     asterms,
+    create_operand as operand,
     term_factory as term,
 )
 
@@ -40,6 +41,7 @@ __all__ = [
     'RatioError',
     'Term',
     'asterms',
+    'operand',
     'expression',
     'reduce',
     'standard',
