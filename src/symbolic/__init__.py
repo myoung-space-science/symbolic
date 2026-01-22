@@ -4,19 +4,27 @@ Support for working with symbolic algebraic terms and expressions.
 
 import typing
 
-from ._definitions import (
+from ._expressions import (
     Expression,
-    OperandFactory,
-    OperandTypeError,
-    OperandValueError,
+    expression_factory as expression,
+    reduce,
+)
+from ._helpers import (
+    standard,
+)
+from ._parsing import (
     ParsingValueError,
     ProductError,
     RatioError,
+)
+from ._parts import (
+    Operand,
+    OperandFactory,
+    OperandTypeError,
+    OperandValueError,
     Term,
     asterms,
-    expression_factory as expression,
-    reduce,
-    standard,
+    create_operand as operand,
     term_factory as term,
 )
 
@@ -24,6 +32,7 @@ from ._definitions import (
 __all__ = [
     'Expression',
     'Expressable',
+    'Operand',
     'OperandFactory',
     'OperandTypeError',
     'OperandValueError',
@@ -32,6 +41,7 @@ __all__ = [
     'RatioError',
     'Term',
     'asterms',
+    'operand',
     'expression',
     'reduce',
     'standard',
