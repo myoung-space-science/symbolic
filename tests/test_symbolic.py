@@ -122,6 +122,32 @@ def test_term_evaluate():
         constant(2)
 
 
+def test_operand_factory():
+    """Test the operand factory function."""
+    cases = {
+        (4, '1', 1): [['4'], [1, '4', 1]],
+        (1, 'a', 1): [['a']],
+        (2, 'a', 1): [['2a'], [1, '2a', 1]],
+        (2, 'a', 3): [['2a^3']],
+        (2**3, 'a', 3): [['(2a)^3'], [1, '2a', 3]],
+        (2**(3/4), 'a', '3/4'): [['(2a)^3/4'], [1, '2a', '3/4']],
+        (4 * 2**3, 'a', 3): [['4(2a)^3'], [4, '2a', 3]],
+        (2, 'a', -1): [['2a^-1']],
+        (1, '2a * b', 3): [['(2a * b)^3']],
+        (3, 'a * b', -2): [['3(a * b)^-2']],
+        (1, 'a / (b * c)', 1): [['a / (b * c)']],
+    }
+    for ref, group in cases.items():
+        from_ref = symbolic.operand(*ref)
+        for args in group:
+            from_args = symbolic.operand(*args)
+            assert from_ref == from_args
+            for part in [from_ref, from_args]:
+                assert part.coefficient == ref[0]
+                assert part.base == ref[1]
+                assert part.exponent == fractions.Fraction(ref[2])
+
+
 def test_create_operand():
     """Test the object representing a part of an expression."""
     cases = {
