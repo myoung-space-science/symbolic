@@ -436,7 +436,13 @@ class OperandFactory(Factory):
             fill=True,
         )
 
-    def create(self, *args, strict: bool=False) -> Operand | None:
+    @typing.overload
+    def create(self, *args, strict: bool = False) -> Operand: ...
+
+    @typing.overload
+    def create(self, *args, strict: bool = ...) -> Operand | None: ...
+
+    def create(self, *args, strict=False):
         """Create an operand from input.
 
         Parameters
@@ -802,6 +808,32 @@ class OperandFactory(Factory):
         string = self.patterns['opening'].sub('', string, count=1)
         string = self.patterns['closing'].sub('', string[::-1], count=1)
         return string[::-1]
+
+
+@typing.overload
+def create_operand(
+    *args,
+    strict: bool = False,
+    opening: str = ...,
+    closing: str = ...,
+    raising: str = ...,
+) -> Operand: ...
+
+@typing.overload
+def create_operand(
+    *args,
+    strict: bool = ...,
+    opening: str = ...,
+    closing: str = ...,
+    raising: str = ...,
+    ) -> Operand | None: ...
+
+def create_operand(*args, strict=False, **kwargs):
+    """Create an operand object.
+    
+    This is a convenience function for `~OperandFactory.create`.
+    """
+    return OperandFactory(**kwargs).create(*args, strict=strict)
 
 
 class Term(Operand):
