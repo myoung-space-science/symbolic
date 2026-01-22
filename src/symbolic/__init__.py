@@ -6,6 +6,7 @@ import typing
 
 from ._definitions import (
     Expression,
+    Operand,
     OperandFactory,
     OperandTypeError,
     OperandValueError,
@@ -24,6 +25,7 @@ from ._definitions import (
 __all__ = [
     'Expression',
     'Expressable',
+    'Operand',
     'OperandFactory',
     'OperandTypeError',
     'OperandValueError',
