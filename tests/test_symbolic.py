@@ -510,6 +510,14 @@ def test_parser_separators():
     assert equal_terms(expression, expected)
 
 
+def test_parse_greek(greek):
+    """Test the ability to identify Greek characters in terms."""
+    for this in greek:
+        symbol = this['symbol']
+        term = symbolic.term(symbol)
+        assert term.base == symbol
+
+
 @pytest.mark.xfail
 @pytest.mark.expression
 def test_nonstandard_chars():
