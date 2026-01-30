@@ -185,9 +185,16 @@ class Operand(Part):
             (?:[eE][-+]?\d+)? #     and an optional exponent
         )
     """
-    base = r"""
-        [α-ωΑ-ΩςϚϛa-zA-Z#_]+ # one or more accepted non-digit character(s)
-        \d*                  # followed by optional digits
+    base = r""" # NB: The following `(?: ...)` is arranged to allow additional
+                #     character sets in an organized fashion.
+        (?:                     # one or more accepted ...
+            [α-ωΑ-ΩςϚϛϑϒϕϖϰϱϵϴ] # ... Greek letters
+            |                   # OR
+            [a-zA-Z]            # ... English letters
+            |                   # OR
+            [#_]                # ... symbolic characters
+        )+
+        \d*                          # followed by optional digits
     """
 
     def __init__(
