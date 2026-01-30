@@ -308,8 +308,8 @@ class OperandFactory(Factory):
         )
     """
     base = r"""
-        [a-zA-Z#_]+ # one or more accepted non-digit character(s)
-        \d*         # followed by optional digits
+        [α-ωΑ-Ωa-zA-Z#_]+ # one or more accepted non-digit character(s)
+        \d*               # followed by optional digits
     """
 
     def __init__(
@@ -861,8 +861,8 @@ class Term(Operand):
         )
     """
     base = r"""
-        [a-zA-Z#_]+ # one or more accepted non-digit character(s)
-        \d*         # followed by optional digits
+        [α-ωΑ-Ωa-zA-Z#_]+ # one or more accepted non-digit character(s)
+        \d*               # followed by optional digits
     """
     _base_re = re.compile(fr'({rational}|{base})', re.VERBOSE)
 
