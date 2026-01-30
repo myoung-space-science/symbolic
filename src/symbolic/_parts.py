@@ -174,6 +174,22 @@ class Operand(Part):
     `~symbolic.Expression` with `~symbolic.Parser`.
     """
 
+    rational = r""" # Modeled after `fractions._RATIONAL_FORMAT`
+        [-+]?                 # an optional sign, ...
+        (?=\d|\.\d)           # ... only if followed by <digit> or .<digit>
+        \d*                   # and a possibly empty numerator
+        (?:                   # followed by ...
+            (?:/\d+?)         # ... an optional denominator
+        |                     # OR
+            (?:\.\d*)?        # ... an optional fractional part,
+            (?:[eE][-+]?\d+)? #     and an optional exponent
+        )
+    """
+    base = r"""
+        [α-ωΑ-Ωa-zA-Z#_]+ # one or more accepted non-digit character(s)
+        \d*                  # followed by optional digits
+    """
+
     def __init__(
         self,
         coefficient: numbers.Real=None,
@@ -296,43 +312,27 @@ class OperatorFactory(Factory):
 class OperandFactory(Factory):
     """A factory that produces symbolic operands."""
 
-    rational = r""" # Modeled after `fractions._RATIONAL_FORMAT`
-        [-+]?                 # an optional sign, ...
-        (?=\d|\.\d)           # ... only if followed by <digit> or .<digit>
-        \d*                   # and a possibly empty numerator
-        (?:                   # followed by ...
-            (?:/\d+?)         # ... an optional denominator
-        |                     # OR
-            (?:\.\d*)?        # ... an optional fractional part,
-            (?:[eE][-+]?\d+)? #     and an optional exponent
-        )
-    """
-    base = r"""
-        [α-ωΑ-Ωa-zA-Z#_]+ # one or more accepted non-digit character(s)
-        \d*               # followed by optional digits
-    """
-
     def __init__(
         self,
         opening: str='(',
         closing: str=')',
         raising: str='^',
     ) -> None:
-        exponent = fr'\{raising}{self.rational}'
+        exponent = fr'\{raising}{Operand.rational}'
         self.patterns = {
             'constant': re.compile(
-                fr'(?P<coefficient>{self.rational})'
+                fr'(?P<coefficient>{Operand.rational})'
                 fr'(?P<exponent>{exponent})?',
                 re.VERBOSE,
             ),
             'variable': re.compile(
-                fr'(?P<coefficient>{self.rational})?'
-                fr'(?P<base>{self.base})'
+                fr'(?P<coefficient>{Operand.rational})?'
+                fr'(?P<base>{Operand.base})'
                 fr'(?P<exponent>{exponent})?',
                 re.VERBOSE,
             ),
             'complex': re.compile(
-                fr'(?P<coefficient>{self.rational})?'
+                fr'(?P<coefficient>{Operand.rational})?'
                 fr'(?P<base>\{opening}.+?\{closing})'
                 fr'(?P<exponent>{exponent})?',
                 re.VERBOSE,
@@ -847,24 +847,7 @@ class Term(Operand):
     combinations.
     """
 
-    # NOTE: Currently redundant with `OperandFactory`.
-
-    rational = r""" # Modeled after `fractions._RATIONAL_FORMAT`
-        [-+]?                 # an optional sign, ...
-        (?=\d|\.\d)           # ... only if followed by <digit> or .<digit>
-        \d*                   # and a possibly empty numerator
-        (?:                   # followed by ...
-            (?:/\d+?)         # ... an optional denominator
-        |                     # OR
-            (?:\.\d*)?        # ... an optional fractional part,
-            (?:[eE][-+]?\d+)? #     and an optional exponent
-        )
-    """
-    base = r"""
-        [α-ωΑ-Ωa-zA-Z#_]+ # one or more accepted non-digit character(s)
-        \d*               # followed by optional digits
-    """
-    _base_re = re.compile(fr'({rational}|{base})', re.VERBOSE)
+    _base_re = re.compile(fr'({Operand.rational}|{Operand.base})', re.VERBOSE)
 
     @classmethod
     def base_is_valid(cls, base):
