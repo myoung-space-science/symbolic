@@ -1,5 +1,7 @@
 ## NEXT
 
+- Add support for Greek letters in symbolic expressions
+
 ## v0.2.0
 
 - Create `symbolic.operand` function
