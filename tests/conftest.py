@@ -72,5 +72,9 @@ def greek():
         {'symbol': 'χ', 'hex': r'\x3C7'},
         {'symbol': 'ψ', 'hex': r'\x3C8'},
         {'symbol': 'ω', 'hex': r'\x3C9'},
+        # non-standard
+        {'symbol': 'ς', 'hex': r'\x3C2'}, # final sigma
+        {'symbol': 'Ϛ', 'hex': r'\x3DA'}, # upper-case stigma
+        {'symbol': 'ϛ', 'hex': r'\x3DB'}, # lower-case stigma
     ]
     return tuple(aslist)
