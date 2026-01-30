@@ -186,7 +186,7 @@ class Operand(Part):
         )
     """
     base = r"""
-        [α-ωΑ-Ωa-zA-Z#_]+ # one or more accepted non-digit character(s)
+        [α-ωΑ-ΩςϚϛa-zA-Z#_]+ # one or more accepted non-digit character(s)
         \d*                  # followed by optional digits
     """
 
